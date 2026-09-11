@@ -1,9 +1,9 @@
 <p align="center">
-  <i>♫ [ I like big worlds and I cannot lie,<br>
+  <i>♫ I like big worlds and I cannot lie,<br>
   You other GM's can't deny,<br>
   That when a big ass map with a itty bitty load time<br>
   and a massive story time lands in your face<br>
-  You roll nat twenties against your crew just for fun! ] ♫</i>
+  You roll nat twenties against your crew just for fun! ♫</i>
 </p>
 
 # Victory Lazy Loader
