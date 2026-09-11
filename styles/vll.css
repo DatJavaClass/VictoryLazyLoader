@@ -1,0 +1,66 @@
+/* Window: rail left, main right, nothing reflows. */
+#vll-app .window-content { display: flex; flex-direction: row; gap: 6px; padding: 6px; overflow: hidden; background: #f0efe6; color: #222; }
+#vll-app .rail { flex: 0 0 200px; display: flex; flex-direction: column; min-height: 0; padding: 4px 6px; border-radius: 4px; background: #e9e7dc; }
+#vll-app .main { flex: 1 1 auto; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+#vll-app h3 { flex: 0 0 auto; display: flex; align-items: baseline; gap: 6px; height: 26px; margin: 0 0 4px; font-size: 1em; color: #222; border-bottom: 1px solid #bbb; }
+#vll-app .hint { font-size: 0.75em; color: #555; font-weight: normal; }
+#vll-app .row { flex: 0 0 auto; display: flex; gap: 4px; align-items: center; margin-bottom: 4px; }
+#vll-app .row input[type=text] { flex: 1 1 auto; min-width: 0; height: 26px; }
+#vll-app button { flex: 0 0 auto; width: auto; height: 26px; line-height: 1; padding: 0 8px; white-space: nowrap; }
+#vll-app button.mini { height: 16px; padding: 0 4px; font-size: 0.7em; margin-left: 4px; }
+#vll-app .danger { background: #fdd; color: #400; }
+
+/* Saved names: fixed height lists, click to pick */
+#vll-app .names { flex: 0 0 120px; overflow: auto; margin: 0 0 4px; padding: 0; list-style: none; background: #f7f7f2; border: 1px solid #bbb; border-radius: 3px; }
+#vll-app .names li { padding: 2px 6px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#vll-app .names li:hover { background: #e2e0d2; }
+#vll-app .names li.active { background: #4a7f1e; color: #fff; }
+#vll-app .names li.notes, #vll-app .notes { color: #888; font-style: italic; cursor: default; }
+
+/* Tabs and the two trees */
+#vll-app nav.tabs { flex: 0 0 auto; display: flex; gap: 10px; border-bottom: 1px solid #999; margin-bottom: 4px; }
+#vll-app nav.tabs .item { cursor: pointer; padding: 2px 4px; color: #333; text-shadow: none; }
+#vll-app nav.tabs .item:hover { color: #000; }
+#vll-app nav.tabs .item.active { color: #000; border-bottom: 3px solid #4a7f1e; }
+#vll-app nav.tabs .item.has-sel { font-weight: bold; color: #4a7f1e; }
+#vll-app .content { flex: 1 1 auto; min-height: 0; overflow: hidden; display: flex; }
+#vll-app .tab { display: none; flex: 1 1 auto; min-height: 0; }
+#vll-app .tab.active { display: flex; }
+#vll-app .pane { flex: 1 1 50%; display: flex; flex-direction: column; min-width: 0; min-height: 0; padding: 4px 6px; border-radius: 4px; }
+#vll-app .pane.comp { background: #eef5e6; margin-right: 4px; border-right: 2px solid #8fb56b; }
+#vll-app .pane.world { background: #e7eef8; margin-left: 4px; }
+#vll-app .tree { flex: 1 1 auto; min-height: 0; overflow: auto; font-size: 0.9em; padding-right: 4px; }
+#vll-app .tree ul { list-style: none; margin: 0; padding-left: 14px; }
+#vll-app .tree summary { cursor: pointer; white-space: nowrap; }
+#vll-app .tree details.pack > summary { font-weight: bold; position: sticky; top: 0; z-index: 1; padding: 2px 0; border-bottom: 1px solid #ccc; background: #eef5e6; color: #2f5f10; }
+#vll-app .comp .tree summary.top { color: #3e7a16; font-weight: bold; }
+#vll-app .world .tree summary.top { color: #1f4e8c; font-weight: bold; }
+#vll-app .tree .root { font-weight: bold; color: #1f4e8c; padding: 2px 0; border-bottom: 1px dashed #aab; margin-bottom: 2px; }
+#vll-app .tree .cnt { color: #777; font-size: 0.85em; font-weight: normal; }
+#vll-app .tree .doc { color: #555; padding-left: 26px; white-space: nowrap; }
+#vll-app .tree .sw { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 3px; }
+
+/* Footer: buttons, bar, log; all fixed height */
+#vll-app footer { flex: 0 0 auto; border-top: 1px solid #999; padding-top: 4px; display: flex; flex-direction: column; }
+#vll-app footer .order { font-size: 0.8em; color: #666; margin-left: auto; }
+#vll-app .bar { flex: 0 0 20px; position: relative; margin-bottom: 4px; background: #ddd; border: 1px solid #aaa; border-radius: 3px; overflow: hidden; }
+#vll-app .bar span { position: absolute; inset: 0; width: 0; background: #8fb56b; transition: width 0.2s; }
+#vll-app .bar b { position: relative; display: block; line-height: 18px; font-size: 0.8em; text-align: center; }
+#vll-app .log { flex: 0 0 auto; height: 130px; overflow: auto; resize: vertical; font-family: monospace; font-size: 0.85em; white-space: pre-wrap; background: #f7f7f2; border: 1px solid #bbb; padding: 4px; }
+
+/* Queue builder: sets left, run order right */
+#vll-queue .window-content { display: flex; flex-direction: column; gap: 4px; padding: 6px; overflow: hidden; background: #f0efe6; color: #222; }
+#vll-queue .names { flex: 0 0 90px; overflow: auto; margin: 0; padding: 0; list-style: none; background: #f7f7f2; border: 1px solid #bbb; border-radius: 3px; }
+#vll-queue .names li { padding: 2px 6px; cursor: pointer; }
+#vll-queue .names li.active { background: #4a7f1e; color: #fff; }
+#vll-queue .row { flex: 0 0 auto; display: flex; gap: 4px; align-items: center; }
+#vll-queue .row input[type=text] { flex: 1 1 auto; min-width: 0; height: 26px; }
+#vll-queue button { flex: 0 0 auto; width: auto; height: 26px; line-height: 1; padding: 0 8px; }
+#vll-queue .cols { display: flex; flex: 1 1 auto; min-height: 0; gap: 8px; }
+#vll-queue .pane { flex: 1 1 50%; min-width: 0; overflow: auto; padding: 4px 6px; border-radius: 4px; background: #f3f3ee; }
+#vll-queue .pane h3 { margin: 0 0 4px; font-size: 1em; color: #222; border-bottom: 1px solid #bbb; }
+#vll-queue .pane ul { list-style: none; margin: 0; padding: 0; }
+#vll-queue .pane li { display: flex; align-items: center; gap: 4px; margin: 2px 0; white-space: nowrap; }
+#vll-queue .pane li span { margin-left: auto; display: flex; gap: 2px; }
+#vll-queue .pane li button { height: 20px; padding: 0 5px; }
+#vll-queue .notes { color: #888; font-style: italic; }
