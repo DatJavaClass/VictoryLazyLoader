@@ -39,5 +39,7 @@
   "VLL.QueueNeedsPick": "Pick a queue first.",
   "VLL.QueueNeedsName": "Queue needs a name.",
   "VLL.SETTINGS.Relock.Name": "Relock compendiums after write",
-  "VLL.SETTINGS.Relock.Hint": "Packs unlocked for a Repack or marking pass are locked again afterward."
+  "VLL.SETTINGS.Relock.Hint": "Packs unlocked for a Repack or marking pass are locked again afterward.",
+  "VLL.SETTINGS.Mirror.Name": "Mirror compendium layout at Root",
+  "VLL.SETTINGS.Mirror.Hint": "A folder with no remembered world parent lands under a copy of its compendium path, compendium name on top, instead of loose at Root. Same named folders from different compendiums stop piling up. Off = the old flat landing."
 }
