@@ -27,6 +27,7 @@ Hooks.once('init', () => {
   game.settings.register(MODULE_ID, 'sets', { scope: 'world', config: false, type: Object, default: {} });
   game.settings.register(MODULE_ID, 'queues', { scope: 'world', config: false, type: Object, default: {} });
   game.settings.register(MODULE_ID, 'relock', { name: 'VLL.SETTINGS.Relock.Name', hint: 'VLL.SETTINGS.Relock.Hint', scope: 'world', config: true, type: Boolean, default: true });
+  game.settings.register(MODULE_ID, 'mirror', { name: 'VLL.SETTINGS.Mirror.Name', hint: 'VLL.SETTINGS.Mirror.Hint', scope: 'world', config: true, type: Boolean, default: true });
 });
 
 /* Module API, load/export = 1.x aliases. */

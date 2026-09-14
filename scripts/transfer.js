@@ -24,10 +24,26 @@ async function ensureFolders(type, folders, existing, place, pack = null) {
   return missing.length;
 }
 
-/* Remembered world parent, else Root. */
-function landing(type, pack, n, out) {
+/* Pack ancestors of n, top first. */
+const lineage = (pack, n) => { const out = []; for (let f = pack.folders.get(n.id)?.folder; f; f = f.folder) out.unshift(f); return out; };
+
+/* World copy of the pack path above n, pack name on top. */
+async function mirror(type, pack, n, out) {
+  const chain = [{ name: pack.metadata.label }, ...lineage(pack, n).map((f) => ({ id: f.id, name: f.name, color: f.color?.css ?? null }))];
+  if (chain.length + 1 + deep(n) > (CONST.FOLDER_MAX_DEPTH ?? 4)) { out.say(`  "${n.name}": pack path too deep to mirror, landing at Root`); return null; }
+  let parent = null;
+  for (const f of chain) {
+    let w = (f.id && game.folders.get(f.id)) || game.folders.find((x) => x.type === type && x.name === f.name && parentOf(x) === parent); /* id first, then name */
+    if (!w) [w] = await cls('Folder').createDocuments([{ ...(f.id ? { _id: f.id } : { flags: { [MODULE_ID]: { label: pack.collection } } }), name: f.name, type, folder: parent, color: f.color ?? null, sorting: 'a' }], quiet({ keepId: !!f.id }));
+    parent = w.id;
+  }
+  return parent;
+}
+
+/* Remembered world parent, mirrored pack path, else Root. */
+async function landing(type, pack, n, out) {
   const home = pack.folders.get(n.id)?.getFlag(MODULE_ID, 'home')?.[game.world.id];
-  if (!home?.parent) return null;
+  if (!home?.parent) return game.settings.get(MODULE_ID, 'mirror') ? mirror(type, pack, n, out) : null; /* remembered Root yields to the mirror */
   const id = game.folders.has(home.parent) ? home.parent : (home.path ? idAtPath(worldTree(type), home.path) : null);
   const why = !id ? 'remembered parent is gone' : depthOf(game.folders, id) + 1 + deep(n) > (CONST.FOLDER_MAX_DEPTH ?? 4) ? 'remembered parent sits too deep' : null;
   if (why) { out.say(`  "${n.name}": ${why}, landing at Root`); return null; }
@@ -68,7 +84,8 @@ const strip = (x) => { x.name = bare(x.name); delete x.flags?.[MODULE_ID]; if (x
 
 /* Pack subtree to world, then mark pack. */
 export async function unpack(type, pack, roots, out) {
-  const { folders, docIds } = flatten(roots), coll = game.collections.get(type), spot = new Map(roots.map((r) => [r.id, landing(type, pack, r, out)]));
+  const { folders, docIds } = flatten(roots), coll = game.collections.get(type), spot = new Map();
+  for (const r of roots) spot.set(r.id, await landing(type, pack, r, out));
   const nf = await ensureFolders(type, folders, game.folders, (n) => spot.get(n.id) ?? null);
   if (!docIds.length) return `${type}: ${nf} folders made, no documents`;
   out.say(`${type}: fetching ${docIds.length} from ${pack.metadata.label}`);
@@ -117,13 +134,12 @@ export async function purge(type, pack, roots, out) {
   out.say(`${type}: deleting ${ids.length}${skipped ? `, keeping ${skipped} unsynced` : ''}, ${nh} placement(s) remembered`);
   await batch(ids, type, (part) => cls(type).deleteDocuments(part, quiet()), out);
 
-  /* Prune emptied pack held folders, children first. */
+  /* Prune emptied pack held folders, children first, then the mirrored path above. */
   let nf = 0;
-  for (const n of [...folders].reverse()) {
-    const f = game.folders.get(n.id);
-    if (!f || f.contents.length || game.folders.some((c) => parentOf(c) === f.id) || !pack.folders.has(f.id)) continue;
-    await f.delete({ deleteSubfolders: false, deleteContents: false, render: false }); nf++;
-  }
+  const empty = (f) => !f.contents.length && !game.folders.some((c) => parentOf(c) === f.id), mine = (f) => pack.folders.has(f.id) || !!f.getFlag(MODULE_ID, 'label');
+  const drop = async (f) => { await f.delete({ deleteSubfolders: false, deleteContents: false, render: false }); nf++; };
+  for (const n of [...folders].reverse()) { const f = game.folders.get(n.id); if (f && empty(f) && mine(f)) await drop(f); }
+  for (const r of roots) for (let f = game.folders.get(r.parent); f && empty(f) && mine(f); f = game.folders.get(parentOf(f))) await drop(f);
   return `${type}: ${ids.length} deleted, ${skipped} kept, ${nf} folders pruned`;
 }
 
