@@ -67,3 +67,8 @@ One world setting: relock compendiums after a write. On by default.
 `game.modules.get('victory-lazy-loader').api` exposes `runSet`, `runQueue`, `swap(out, in)`, `unpack`, `repack`, `validate`, `sets`, `queues`, `list`, and `LOG`, with hooks `vll.ready`, `vll.done`, and `vll.queueDone`. `load` and `export` still answer as aliases from 1.x.
 
 AI was used to assist in the refactoring and streamlining of the module from its original macro form.
+
+## Changes
+
+- 2.2.0: mirrored landing. A folder with no remembered world parent lands under a copy of its compendium path, compendium name on top, so same named folders from different compendiums stop stacking at Root. Validate and Delete prunes that path once it empties. New world setting, Mirror compendium layout at Root, on by default.
+- 2.1.4: first public release.
