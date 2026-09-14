@@ -2,7 +2,7 @@
   "id": "victory-lazy-loader",
   "title": "Victory Lazy Loader",
   "description": "Unpack whole folder hierarchies from compendiums into the world and repack them home again, in load order, so large worlds stay light for weak clients.",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "authors": [
     {
       "name": "Victor S. (DatJavaClass)"
@@ -27,5 +27,5 @@
     }
   ],
   "manifest": "https://github.com/DatJavaClass/VictoryLazyLoader/releases/latest/download/module.json",
-  "download": "https://github.com/DatJavaClass/VictoryLazyLoader/releases/download/v2.1.4/victory-lazy-loader-2.1.4.zip"
+  "download": "https://github.com/DatJavaClass/VictoryLazyLoader/releases/download/v2.2.0/victory-lazy-loader-2.2.0.zip"
 }

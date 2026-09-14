@@ -32,7 +32,7 @@ Open **Compendiums > Lazy Loader**. Seven tabs, one per document type, in the or
 
 The left pane is your compendiums. Checking a folder takes its whole subtree, and unchecking clears the parents too, so a partial pick stays honest. The right pane is the world, display only. A link icon means that folder is synced with a compendium copy. A small box button means it is not, and clicking it adopts the folder into a compendium of your choice.
 
-Sort world folders in Foundry's own sidebar. Repack remembers where each folder sat, and the next Unpack puts it back there. Unpack never moves a folder that already exists.
+Sort world folders in Foundry's own sidebar. Repack remembers where each folder sat, and the next Unpack puts it back there. Unpack never moves a folder that already exists. A folder Repack has never seen lands under a copy of its own compendium path, compendium name on top, so two compendiums that both hold a Harbor folder give you NPCs/Harbor and Actors/Harbor instead of two Harbors stacked at Root. The world setting Mirror compendium layout at Root turns that off for the old flat landing.
 
 ## Sets and queues
 
