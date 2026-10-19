@@ -25,7 +25,7 @@ export const packWith = (type, ids) => packsOf(type).find((p) => ids.some((id) =
 export async function packTrees(type) {
   const out = [];
   for (const pack of packsOf(type)) { /* in: each pack, out: trees collected */
-    await pack.getIndex();
+    try { await pack.getIndex(); } catch (e) { throw new Error(`pack "${pack.collection}" index failed: ${e.message}`); } /* entry: fetch fails, exit: clear throw */
     if (!pack.folders.size) continue; /* in: pack, out: skip if no folders */
     out.push({ pack, tree: buildTree(pack.folders.contents, pack.index.contents) });
   }
