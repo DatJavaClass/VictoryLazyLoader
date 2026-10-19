@@ -5,21 +5,21 @@ import { LOG, ACTS, say, discover, resolve, plan, run, runSet, runQueue, swap, m
 
 let app = null;
 const open = () => (app ??= new LazyLoaderApp()).render(true);
-const gm = () => { if (!game.user.isGM) throw new Error('VLL: GM only'); };
+const gm = () => { if (!game.user.isGM) throw new Error('VLL: GM only'); }; /* throws for non GM */
 
 /* Folder names per type and side, for callers. */
 async function list() {
-  const data = await discover(), dump = (n, d) => [`${'  '.repeat(d)}${n.name} (${n.docs.length})`, ...n.folders.map((c) => dump(c, d + 1))].join('\n');
+  const data = await discover(), dump = (n, d) => [`${'  '.repeat(d)}${n.name} (${n.docs.length})`, ...n.folders.map((c) => dump(c, d + 1))].join('\n'); /* folder tree dumper */
   const out = {};
-  for (const t of TYPES) out[t] = { packs: Object.fromEntries(data[t].packs.map((e) => [e.pack.collection, e.tree.map((n) => dump(n, 0)).join('\n')])), world: data[t].world.map((n) => dump(n, 0)).join('\n') };
+  for (const t of TYPES) out[t] = { packs: Object.fromEntries(data[t].packs.map((e) => [e.pack.collection, e.tree.map((n) => dump(n, 0)).join('\n')])), world: data[t].world.map((n) => dump(n, 0)).join('\n') }; /* in: each type, out: pack and world dumps */
   return out;
 }
 
 /* One action over ad hoc members. */
 async function act(action, members) {
   gm();
-  const { groups, miss } = resolve(await discover(), members.map((m) => ({ ...m, id: m.id ?? '' })));
-  if (miss) say(`api ${action}: ${miss} member(s) not found`);
+  const { groups, miss } = resolve(await discover(), members.map((m) => ({ ...m, id: m.id ?? '' }))); /* groups plus miss count */
+  if (miss) say(`api ${action}: ${miss} member(s) not found`); /* in: miss, out: log if any */
   return run(plan(groups, ACTS[action]), `api ${action}`);
 }
 
@@ -32,7 +32,7 @@ Hooks.once('init', () => {
 
 /* Module API, load/export = 1.x aliases. */
 Hooks.once('ready', async () => {
-  if (!game.user.isGM) return;
+  if (!game.user.isGM) return; /* in: user, out: skip non GM */
   await migrate();
   game.modules.get(MODULE_ID).api = {
     open, list, LOG, TYPES,
@@ -50,9 +50,9 @@ Hooks.once('ready', async () => {
 
 /* Compendium sidebar button, GM only. */
 Hooks.on('renderCompendiumDirectory', (dir, html) => {
-  if (!game.user.isGM) return;
+  if (!game.user.isGM) return; /* in: user, out: skip non GM */
   const el = html instanceof HTMLElement ? html : html[0], host = el.querySelector('.directory-header .header-actions') ?? el.querySelector('.directory-header .action-buttons') ?? el.querySelector('.directory-header') ?? el; /* v12 jQuery, v13 element */
-  if (host.querySelector('.vll-open')) return;
+  if (host.querySelector('.vll-open')) return; /* in: host, out: skip if present */
   const b = document.createElement('button');
   b.type = 'button'; b.className = 'vll-open'; b.innerHTML = `<i class="fas fa-truck-loading"></i> ${L('Open')}`;
   b.addEventListener('click', open);
